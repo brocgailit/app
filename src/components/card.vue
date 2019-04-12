@@ -33,13 +33,21 @@
           @error="onImageError"
         />
 
-        <v-icon v-if="error" class="error icon" name="broken_image" />
+        <v-icon
+          v-if="error"
+          class="error icon"
+          name="broken_image"
+          size="48"
+          color="white"
+        />
 
         <v-icon
           v-if="icon"
           :class="{ 'half-opacity': opacity === 'half' }"
           class="icon"
           :name="icon"
+          size="48"
+          color="white"
         />
 
         <div v-if="$slots.icon" class="custom-icon"><slot name="icon" /></div>
@@ -281,8 +289,8 @@ export default {
     }
 
     .custom-icon {
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
     }
 
     img,

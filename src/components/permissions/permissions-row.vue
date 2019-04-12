@@ -7,7 +7,7 @@
             $helpers.formatTitle(
               system ? permissionName.substring(9) : permissionName
             )
-          }}<i v-if="system" class="material-icons">star</i></span
+          }}*</span
         >
         <span class="set-all">
           <button @click.prevent="setAll(true)" type="button">
@@ -144,16 +144,13 @@
     <template v-if="active">
       <div class="sub row">
         <div class="cell">
-          <span class="system"
-            >{{ $t("permission_states.create")
-            }}<i class="material-icons">star</i></span
-          >
+          <span class="system">{{ $t("permission_states.create") }}*</span>
         </div>
-        <div class="cell block"><i class="material-icons">block</i></div>
-        <div class="cell block"><i class="material-icons">block</i></div>
-        <div class="cell block"><i class="material-icons">block</i></div>
-        <div class="cell block"><i class="material-icons">block</i></div>
-        <div class="cell block"><i class="material-icons">block</i></div>
+        <div class="cell block"><v-icon name="block" /></div>
+        <div class="cell block"><v-icon name="block" /></div>
+        <div class="cell block"><v-icon name="block" /></div>
+        <div class="cell block"><v-icon name="block" /></div>
+        <div class="cell block"><v-icon name="block" /></div>
         <div class="cell">
           <button
             :class="{ limited: getFieldSettingsPerStatus('$create') }"
@@ -263,7 +260,7 @@
       </div>
     </template>
     <button class="collapse" @click="active = !active">
-      <i class="material-icons">{{ active ? "unfold_less" : "unfold_more" }}</i>
+      <v-icon :name="active ? 'unfold_less' : 'unfold_more'" />
     </button>
     <portal v-if="fieldsSelect" to="modal">
       <v-modal
@@ -626,17 +623,6 @@ export default {
 
 .block {
   color: var(--lightest-gray);
-
-  i {
-    position: relative;
-    left: -3px;
-  }
-}
-
-.system i {
-  color: var(--accent);
-  vertical-align: super;
-  font-size: 7px;
 }
 
 .set-all {

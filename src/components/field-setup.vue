@@ -36,9 +36,11 @@
               @click="setInterface(ext.id)"
             >
               <div class="header">
-                <i class="material-icons">{{
-                  ext.icon ? ext.icon : "category"
-                }}</i>
+                <v-icon
+                  :name="ext.icon || 'category'"
+                  size="48"
+                  color="white"
+                />
               </div>
               <div class="body">
                 <h2>{{ ext.name }}</h2>
@@ -60,10 +62,7 @@
       <form @submit.prevent class="schema">
         <div class="name">
           <label
-            >{{ $t("name")
-            }}<i v-tooltip="$t('required')" class="material-icons required"
-              >star</i
-            >
+            >{{ $t("name") }}*
             <v-input
               type="text"
               v-model="field"
@@ -209,7 +208,7 @@
           <option selected :value="field">{{ field }}</option>
         </v-simple-select>
 
-        <i class="material-icons">arrow_backward</i>
+        <v-icon name="arrow_backward" />
 
         <p>{{ $t("related_collection") }}</p>
 
@@ -269,7 +268,7 @@
           }}</option>
         </v-simple-select>
 
-        <i class="material-icons">arrow_forward</i>
+        <v-icon name="arrow_forward" />
 
         <p>{{ $t("related_collection") }}</p>
 
@@ -321,7 +320,7 @@
           }}</option>
         </v-simple-select>
 
-        <i class="material-icons">arrow_forward</i>
+        <v-icon name="arrow_forward" />
 
         <p>{{ $t("junction_collection") }}</p>
 
@@ -422,7 +421,7 @@
           @change="createM2Mjunction = !createM2Mjunction"
         />
 
-        <i class="material-icons">arrow_backward</i>
+        <v-icon="arrow_backward" />
 
         <p>{{ $t("related_collection") }}</p>
 
@@ -1571,11 +1570,6 @@ p {
       align-items: center;
       padding: 20px 0;
       transition: background-color var(--fast) var(--transition-out);
-
-      i {
-        font-size: 48px;
-        color: var(--white);
-      }
     }
 
     &.active {
@@ -1736,7 +1730,7 @@ details {
 .required {
   color: var(--accent);
   vertical-align: super;
-  font-size: 7px;
+  font-size: 7px !important;
 }
 
 .single {

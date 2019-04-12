@@ -13,7 +13,7 @@
   |-------|----------------------------------------|---------|
   | name* | The name of the icon to render         | -       |
   | size  | The size of the icon in px             | 24      |
-  | color | A color name out of the global pallete | gray    |
+  | color | A color name out of the global pallete | -       |
 </docs>
 
 <template>
@@ -64,7 +64,7 @@ export default {
     // A color name from our global variables, eg `red-500`, `accent`, or `darkest-gray`
     color: {
       type: String,
-      default: "gray"
+      default: undefined
     }
   },
   computed: {
@@ -77,10 +77,15 @@ export default {
 
     // The inline styles of the material design icon
     iconStyle() {
-      return {
-        fontSize: this.size + "px",
-        color: `var(--${this.color})`
+      const styles = {
+        fontSize: this.size + "px"
       };
+
+      if (this.color) {
+        styles.color = `var(--${this.color})`;
+      }
+
+      return styles;
     },
 
     // The inline styles of the alternate-icon svg

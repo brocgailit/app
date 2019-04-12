@@ -28,7 +28,7 @@
         line-fg-color="white"
         line-bg-color="transparent"
       />
-      <v-icon :style="{ color: `var(--${iconColor})` }" :name="icon" />
+      <v-icon v-else :style="{ color: `var(--${iconColor})` }" :name="icon" />
     </component>
   </div>
 </template>

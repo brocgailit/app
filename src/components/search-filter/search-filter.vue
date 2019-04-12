@@ -28,7 +28,6 @@
           @click="clearFilters"
         >
           <v-icon name="close" />
-          <i class="material-icons">close</i>
         </button>
       </transition>
       <button
@@ -36,7 +35,7 @@
         class="toggle"
         @click="open = !open"
       >
-        <i class="material-icons">filter_list</i>
+        <v-icon name="filter_list" />
       </button>
     </div>
 
@@ -60,7 +59,7 @@
             <p>{{ fields[filter.field] }}</p>
             <span>
               {{ $t(operators[filter.operator]) }}
-              <i class="material-icons">arrow_drop_down</i>
+              <v-icon name="arrow_drop_down" />
               <select
                 @change="updateFilter(i, 'operator', $event.target.value)"
               >

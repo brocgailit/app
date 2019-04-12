@@ -35,7 +35,7 @@
     <div class="table">
       <div class="header">
         <div class="row">
-          <div class="drag"><i class="material-icons">swap_vert</i></div>
+          <div class="drag"><v-icon name="swap_vert" /></div>
           <div>{{ $t("field") }}</div>
           <div>{{ $t("interface") }}</div>
         </div>
@@ -43,7 +43,7 @@
       <div class="body" :class="{ dragging }">
         <draggable v-model="fields" @start="startSort" @end="saveSort">
           <div class="row" v-for="field in fields" :key="field.field">
-            <div class="drag"><i class="material-icons">drag_handle</i></div>
+            <div class="drag"><v-icon name="drag_handle" /></div>
             <div class="inner row" @click.stop="startEditingField(field)">
               <div>
                 {{ $helpers.formatTitle(field.field) }}
@@ -74,7 +74,7 @@
               v-if="canDuplicate(field.interface) || fields.length > 1"
             >
               <button type="button" class="menu-toggle">
-                <i class="material-icons">more_vert</i>
+                <v-icon name="more_vert" />
               </button>
               <template slot="popover">
                 <ul class="ctx-menu">
@@ -85,7 +85,7 @@
                       @click.stop="duplicateField(field)"
                       :disabled="!canDuplicate(field.interface)"
                     >
-                      <i class="material-icons">control_point_duplicate</i>
+                      <v-icon name="control_point_duplicate" />
                       {{ $t("duplicate") }}
                     </button>
                   </li>
@@ -96,7 +96,7 @@
                       type="button"
                       @click.stop="warnRemoveField(field.field)"
                     >
-                      <i class="material-icons">close</i> {{ $t("delete") }}
+                      <v-icon name="close" /> {{ $t("delete") }}
                     </button>
                   </li>
                 </ul>

@@ -1,3 +1,21 @@
+<docs>
+  # Icon Component
+
+  ## Usage
+
+  ```vue
+  <v-icon name="person" />
+  ```
+
+  ## Properties
+
+  | name  | description                            | default |
+  |-------|----------------------------------------|---------|
+  | name* | The name of the icon to render         | -       |
+  | size  | The size of the icon in px             | 24      |
+  | color | A color name out of the global pallete | gray    |
+</docs>
+
 <template>
   <svg
     v-if="isCustom"

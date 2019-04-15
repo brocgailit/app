@@ -30,6 +30,7 @@
             <button
               v-for="column in columns"
               type="button"
+              class="style-4"
               :key="column.field"
               @click="changeSort(column.field)"
             >
@@ -594,14 +595,11 @@ export default {
 
   .header {
     height: var(--input-height);
-    border-bottom: 1px solid var(--lighter-gray);
+    border-bottom: 2px solid var(--lightest-gray);
 
     button {
       text-align: left;
       color: var(--gray);
-      font-size: 10px;
-      text-transform: uppercase;
-      font-weight: 700;
       transition: color var(--fast) var(--transition);
 
       &:hover {
@@ -612,7 +610,7 @@ export default {
 
     i {
       font-size: 12px;
-      vertical-align: top;
+      vertical-align: middle;
       color: var(--light-gray);
     }
   }
@@ -647,7 +645,7 @@ export default {
       cursor: pointer;
       position: relative;
       height: 50px;
-      border-bottom: 1px solid var(--lightest-gray);
+      border-bottom: 2px solid var(--off-white);
 
       &:hover {
         background-color: var(--highlight);
@@ -696,7 +694,7 @@ button.select {
 }
 
 .search-input {
-  border-bottom: 1px solid var(--lightest-gray);
+  border-bottom: 2px solid var(--lightest-gray);
   & >>> input {
     border-radius: 0;
     border: none;

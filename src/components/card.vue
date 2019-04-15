@@ -107,7 +107,7 @@ export default {
     },
     color: {
       type: String,
-      default: "lighter-gray"
+      default: "gray"
     },
     src: {
       type: String,
@@ -223,7 +223,7 @@ export default {
   &:not(.disabled):hover,
   &:not(.disabled).selected {
     .header {
-      background-color: var(--light-gray) !important;
+      background-color: var(--dark-gray) !important;
     }
   }
 
@@ -311,11 +311,9 @@ export default {
     cursor: not-allowed;
 
     & .header {
-      background-color: var(--lighter-gray) !important;
-
       & .icon,
       & .custom-icon {
-        opacity: 0.4;
+        opacity: 0.3;
       }
     }
   }
@@ -448,11 +446,11 @@ export default {
     transition: color var(--fast) var(--transition);
 
     &:hover {
-      color: var(--accent);
+      color: var(--darkest-gray);
       transition: none;
 
       i {
-        color: var(--accent);
+        color: var(--darkest-gray);
         transition: none;
       }
     }

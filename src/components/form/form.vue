@@ -96,7 +96,9 @@ export default {
     groupedFields() {
       const fieldsArray = Object.values(this.fields).filter(
         field =>
-          this.permissions.read_field_blacklist.includes(field.field) === false
+          (this.permissions.read_field_blacklist || []).includes(
+            field.field
+          ) === false
       );
 
       const result = fieldsArray
@@ -178,7 +180,7 @@ export default {
 <style lang="scss">
 .v-form {
   width: 100%;
-  max-width: 680px;
+  max-width: 632px;
 
   @media (min-width: 680px) {
     &.flex-group,

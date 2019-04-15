@@ -96,13 +96,13 @@ export default {
 i {
   position: relative;
   top: -1px;
-  left: -0.5px;
+  left: 0px;
   font-size: 16px;
   color: var(--white);
 }
 
 .none {
-  border-color: var(--red);
+  border-color: var(--lighter-gray);
 }
 
 .mine {
@@ -116,8 +116,8 @@ i {
 }
 
 .full {
-  background-color: var(--accent);
-  border-color: var(--accent);
+  background-color: var(--success);
+  border-color: var(--success);
 }
 
 .read {
@@ -126,13 +126,13 @@ i {
 }
 
 .create {
-  background-color: var(--yellow-700);
-  border-color: var(--yellow-700);
+  background-color: var(--orange);
+  border-color: var(--orange);
 }
 
 .update {
-  background-color: var(--success);
-  border-color: var(--success);
+  background-color: var(--orange);
+  border-color: var(--orange);
 }
 
 .always {

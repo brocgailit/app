@@ -14,18 +14,16 @@
       <template v-if="!existing">
         <h1 class="style-0">{{ $t("choose_interface") }}</h1>
       </template>
-      <p v-if="interfaceName" class="currently-selected subtext">
-        {{
-          $t("currently_selected", { thing: interfaces[interfaceName].name })
-        }}
-      </p>
+      <v-notice v-if="interfaceName" color="gray" class="currently-selected">{{
+        $t("currently_selected", { thing: interfaces[interfaceName].name })
+      }}</v-notice>
       <p v-else class="subtext">{{ $t("select_interface_below") }}</p>
       <div>
         <v-details
-          v-for="(group, index) in interfacesGrouped"
+          v-for="group in interfacesGrouped"
           :title="group.title"
           :key="group.title"
-          :open="index === 0"
+          :open="1"
         >
           <div class="interfaces">
             <article
@@ -1532,10 +1530,11 @@ p {
     line-height: 26px;
     font-weight: 400;
     margin-bottom: 40px;
-    &.currently-selected {
-      color: var(--accent);
-    }
   }
+}
+
+.currently-selected {
+  margin-bottom: 40px;
 }
 
 .note {
@@ -1651,7 +1650,7 @@ form.schema {
       width: max-content;
 
       &:not(.disabled):hover {
-        color: var(--accent);
+        color: var(--darkest-gray);
       }
 
       > *:first-child {
@@ -1736,7 +1735,7 @@ details {
 }
 
 .required {
-  color: var(--accent);
+  color: var(--darkest-gray);
   vertical-align: super;
   font-size: 7px;
 }

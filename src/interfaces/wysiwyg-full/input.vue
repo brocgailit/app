@@ -164,11 +164,15 @@ export default {
 </script>
 
 <style lang="scss">
+.ql-container {
+  font-size: 14px;
+}
+
 .ql-choose-existing {
   padding: 3px 5px;
   color: var(--light-gray);
   &:hover {
-    color: var(--accent);
+    color: var(--darkest-gray);
   }
   &:after {
     content: "collections";
@@ -180,7 +184,7 @@ export default {
   padding: 3px 5px;
   color: var(--light-gray);
   &:hover {
-    color: var(--accent);
+    color: var(--darkest-gray);
   }
   &:after {
     content: "add_photo_alternate";

@@ -10,6 +10,23 @@
       <div class="table" v-if="items.length">
         <div class="header">
           <div class="row">
+            <div
+              v-if="manualSortField"
+              class="manual-sort cell"
+              :class="{ active: manualSorting }"
+            >
+              <button
+                class="no-wrap"
+                type="button"
+                v-tooltip="$t('enable_manual_sorting')"
+                @click="startManualSorting"
+              >
+                <i class="material-icons">sort</i>
+                <i v-if="manualSorting" class="material-icons">
+                  {{ sort.asc ? "arrow_downward" : "arrow_upward" }}
+                </i>
+              </button>
+            </div>
             <button
               v-for="column in columns"
               type="button"
@@ -24,37 +41,57 @@
           </div>
         </div>
         <div class="body">
-          <div
-            v-for="item in items"
-            class="row"
-            :key="item[junctionPrimaryKey]"
-            @click="editExisting = item"
+          <component
+            :is="manualSorting ? 'draggable' : 'div'"
+            v-model="itemsManuallySorted"
+            :options="{ handle: '.manual-sort' }"
+            @start="startSort"
+            @end="saveSort"
           >
-            <div v-for="column in columns" :key="column.field" class="no-wrap">
-              <v-ext-display
-                :interface-type="(column.fieldInfo || {}).interface || null"
-                :name="column.field"
-                :type="column.fieldInfo.type"
-                :datatype="column.fieldInfo.datatype"
-                :options="column.fieldInfo.options"
-                :value="item[junctionRelatedKey][column.field]"
-              />
-            </div>
-            <button
-              type="button"
-              class="remove-item"
-              v-tooltip="$t('remove_related')"
-              @click.stop="
-                removeRelated({
-                  junctionKey: item[junctionPrimaryKey],
-                  relatedKey: item[junctionRelatedKey][relatedKey],
-                  item
-                })
-              "
+            <div
+              v-for="item in items"
+              :key="item[junctionPrimaryKey]"
+              @click="editExisting = item"
+              class="row"
             >
-              <i class="material-icons">close</i>
-            </button>
-          </div>
+              <div
+                v-if="manualSortField"
+                @click.stop.prevent
+                class="manual-sort cell"
+                :class="{ active: manualSorting }"
+              >
+                <i class="material-icons">drag_handle</i>
+              </div>
+              <div
+                v-for="column in columns"
+                :key="column.field"
+                class="no-wrap"
+              >
+                <v-ext-display
+                  :interface-type="(column.fieldInfo || {}).interface || null"
+                  :name="column.field"
+                  :type="column.fieldInfo.type"
+                  :datatype="column.fieldInfo.datatype"
+                  :options="column.fieldInfo.options"
+                  :value="item[junctionRelatedKey][column.field]"
+                />
+              </div>
+              <button
+                type="button"
+                class="remove-item"
+                v-tooltip="$t('remove_related')"
+                @click.stop="
+                  removeRelated({
+                    junctionKey: item[junctionPrimaryKey],
+                    relatedKey: item[junctionRelatedKey][relatedKey],
+                    item
+                  })
+                "
+              >
+                <i class="material-icons">close</i>
+              </button>
+            </div>
+          </component>
         </div>
       </div>
       <button type="button" class="style-btn select" @click="addNew = true">
@@ -169,6 +206,10 @@ export default {
         asc: true
       },
 
+      manualSorting: false,
+      itemsManuallySorted: [],
+      dragging: false,
+
       selectExisting: false,
       selectionSaving: false,
       selection: [],
@@ -226,7 +267,10 @@ export default {
         (this.value || [])
           .filter(val => !val.$delete)
           .filter(val => val[this.junctionRelatedKey] != null),
-        item => item[this.junctionRelatedKey][this.sort.field],
+        item =>
+          this.manualSorting && this.manualSortField
+            ? item[this.manualSortField]
+            : item[this.junctionRelatedKey][this.sort.field],
         this.sort.asc ? "asc" : "desc"
       );
     },
@@ -292,11 +336,22 @@ export default {
         ...viewQuery,
         ...this.viewQueryOverride
       };
+    },
+    manualSortField() {
+      const sort = this.$lodash.find(this.relation.collection_many.fields, {
+        type: "sort"
+      });
+      return sort ? sort.field : null;
     }
   },
   created() {
     if (this.relationSetup) {
-      this.sort.field = this.visibleFields && this.visibleFields[0];
+      if (this.manualSortField) {
+        this.manualSorting = true;
+        this.itemsManuallySorted = this.value;
+      } else {
+        this.sort.field = this.visibleFields && this.visibleFields[0];
+      }
       this.setSelection();
     }
 
@@ -409,7 +464,7 @@ export default {
               });
             }
           }
-
+          console.log("delete payload", newValue);
           this.$emit("input", newValue);
 
           this.selectExisting = false;
@@ -501,6 +556,28 @@ export default {
       this.setViewQuery({
         q: value
       });
+    },
+    startManualSorting() {
+      this.sort.field = null;
+      if (this.manualSorting) {
+        this.sort.asc = !this.sort.asc;
+        return;
+      }
+      this.sort.asc = true;
+      this.manualSorting = true;
+    },
+    startSort() {
+      this.dragging = true;
+    },
+    saveSort() {
+      this.dragging = false;
+      const update = [
+        ...this.itemsManuallySorted.map((val, i) => ({
+          ...val,
+          [this.manualSortField]: i + 1
+        }))
+      ];
+      this.$emit("input", update);
     }
   }
 };
@@ -634,5 +711,32 @@ button.select {
 
 .items {
   height: calc(100% - var(--header-height) - 1px);
+}
+
+.manual-sort {
+  flex-basis: 30px !important;
+  padding: 0;
+  margin-right: 8px;
+  cursor: not-allowed;
+  color: var(--lightest-gray);
+
+  &.active {
+    cursor: grab;
+    cursor: -webkit-grab;
+    color: var(--gray);
+  }
+  button {
+    color: var(--light-gray);
+    transition: color var(--fast) var(--transition);
+
+    &:hover {
+      transition: none;
+      color: var(--dark-gray);
+    }
+  }
+
+  &.active button {
+    color: var(--accent);
+  }
 }
 </style>

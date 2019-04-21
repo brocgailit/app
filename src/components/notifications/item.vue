@@ -1,16 +1,14 @@
 <template>
   <div class="notification" :class="item.type">
     <div class="icon-main" :style="{ backgroundColor: ringColor }">
-      <i class="material-icons" :style="{ color: iconColor }">{{
-        item.iconMain
-      }}</i>
+      <v-icon :color="iconColor" :name="item.iconMain" />
     </div>
     <div class="content">
       <div class="title">{{ item.title }}</div>
       <div class="details" v-html="detailHtml"></div>
     </div>
     <div class="icon-right" @click="actionClick">
-      <i class="material-icons">{{ item.iconRight }}</i>
+      <v-icon :name="item.iconRight" />
     </div>
   </div>
 </template>
@@ -27,9 +25,7 @@ export default {
   },
   computed: {
     detailHtml() {
-      return this.item.details !== undefined
-        ? this.$helpers.snarkdown(this.item.details)
-        : "";
+      return this.item.details !== undefined ? this.$helpers.snarkdown(this.item.details) : "";
     },
     iconColor() {
       return this.item.color !== undefined

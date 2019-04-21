@@ -1,11 +1,7 @@
 <template>
   <not-found v-if="!collectionInfo" />
   <div class="settings-fields" v-else>
-    <v-header
-      :breadcrumb="breadcrumb"
-      :icon-link="`/settings/collections`"
-      icon-color="warning"
-    >
+    <v-header :breadcrumb="breadcrumb" :icon-link="`/settings/collections`" icon-color="warning">
       <template slot="buttons">
         <v-header-button
           icon="delete_outline"
@@ -32,30 +28,21 @@
     <div class="table">
       <div class="header">
         <div class="row">
-          <div class="drag"><i class="material-icons">swap_vert</i></div>
-          <div class="style-4">{{ $t("field") }}</div>
-          <div class="style-4">{{ $t("interface") }}</div>
+          <div class="drag"><v-icon name="swap_vert" /></div>
+          <div>{{ $t("field") }}</div>
+          <div>{{ $t("interface") }}</div>
         </div>
       </div>
       <div class="body" :class="{ dragging }">
         <draggable v-model="fields" @start="startSort" @end="saveSort">
           <div class="row" v-for="field in fields" :key="field.field">
-            <div class="drag"><i class="material-icons">drag_handle</i></div>
+            <div class="drag"><v-icon name="drag_handle" /></div>
             <div class="inner row" @click.stop="startEditingField(field)">
               <div>
                 {{ $helpers.formatTitle(field.field) }}
-                <i
-                  v-tooltip="$t('required')"
-                  class="material-icons required"
-                  v-if="field.required !== true || field.required === '0'"
-                  >star</i
-                >
-                <i
-                  v-tooltip="$t('primary_key')"
-                  class="material-icons key"
-                  v-if="field.primary_key"
-                  >vpn_key</i
-                >
+                <span class="optional" v-if="field.required === false && !field.primary_key">
+                  — {{ $t("optional") }}
+                </span>
               </div>
               <div>
                 {{
@@ -71,7 +58,7 @@
               v-if="canDuplicate(field.interface) || fields.length > 1"
             >
               <button type="button" class="menu-toggle">
-                <i class="material-icons">more_vert</i>
+                <v-icon name="more_vert" />
               </button>
               <template slot="popover">
                 <ul class="ctx-menu">
@@ -82,7 +69,7 @@
                       @click.stop="duplicateField(field)"
                       :disabled="!canDuplicate(field.interface)"
                     >
-                      <i class="material-icons">control_point_duplicate</i>
+                      <v-icon name="control_point_duplicate" />
                       {{ $t("duplicate") }}
                     </button>
                   </li>
@@ -93,7 +80,8 @@
                       type="button"
                       @click.stop="warnRemoveField(field.field)"
                     >
-                      <i class="material-icons">close</i> {{ $t("delete") }}
+                      <v-icon name="close" />
+                      {{ $t("delete") }}
                     </button>
                   </li>
                 </ul>
@@ -104,9 +92,9 @@
       </div>
     </div>
 
-    <v-button @click="startEditingField({})" class="new-field"
-      >New Field</v-button
-    >
+    <v-button @click="startEditingField({})" class="new-field">
+      {{ $t("new_field") }}
+    </v-button>
 
     <v-form
       v-if="fields"
@@ -324,9 +312,7 @@ export default {
       this.$set(this.edits, field, value);
     },
     canDuplicate(fieldInterface) {
-      return (
-        this.duplicateInterfaceBlacklist.includes(fieldInterface) === false
-      );
+      return this.duplicateInterfaceBlacklist.includes(fieldInterface) === false;
     },
     duplicateFieldSettings({ fieldInfo, collection }) {
       const requests = [];
@@ -374,9 +360,9 @@ export default {
     setFieldSettings({ fieldInfo, relation }) {
       this.fieldSaving = true;
 
-      const existingField = this.$store.state.collections[
-        this.collection
-      ].fields.hasOwnProperty(fieldInfo.field);
+      const existingField = this.$store.state.collections[this.collection].fields.hasOwnProperty(
+        fieldInfo.field
+      );
 
       const requests = [];
 
@@ -384,9 +370,7 @@ export default {
       this.$store.dispatch("loadingStart", { id });
 
       if (existingField) {
-        requests.push(
-          this.$api.updateField(this.collection, fieldInfo.field, fieldInfo)
-        );
+        requests.push(this.$api.updateField(this.collection, fieldInfo.field, fieldInfo));
       } else {
         delete fieldInfo.id;
         fieldInfo.collection = this.collection;
@@ -584,7 +568,7 @@ export default {
             directusFields.map(field => ({
               ...field,
               name: formatTitle(field.field),
-              note: vm.$t("note_" + field.field)
+              note: field.note
             })),
             "field"
           );
@@ -699,19 +683,6 @@ h2 {
       &:hover {
         background-color: var(--highlight);
       }
-
-      .required {
-        color: var(--darkest-gray);
-        vertical-align: super;
-        font-size: 7px;
-      }
-
-      .key {
-        color: var(--light-gray);
-        font-size: 16px;
-        vertical-align: -3px;
-        margin-left: 2px;
-      }
     }
 
     .drag {
@@ -768,7 +739,7 @@ label.label {
 .ctx-menu {
   list-style: none;
   padding: 0;
-  width: var(--width-small);
+  width: 136px;
 
   li {
     display: block;
@@ -804,5 +775,9 @@ label.label {
       }
     }
   }
+}
+
+.optional {
+  color: var(--lighter-gray);
 }
 </style>

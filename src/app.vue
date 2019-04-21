@@ -8,7 +8,8 @@
     />
     <p>
       Try again later or
-      <router-link to="/logout">login to another instance</router-link>.
+      <router-link to="/logout">login to another instance</router-link>
+      .
     </p>
   </div>
 
@@ -24,7 +25,7 @@
   <div
     v-else-if="!publicRoute"
     :style="{
-      '--accent': `var(--${color})`
+      '--brand': `var(--${color})`
     }"
   >
     <div v-if="hydrated" class="directus">
@@ -67,7 +68,7 @@ export default {
       color: state =>
         state.settings.values.color ||
         getComputedStyle(document.documentElement)
-          .getPropertyValue("--accent")
+          .getPropertyValue("--brand")
           .trim(),
       infoActive: state => state.sidebars.info
     }),
@@ -125,9 +126,7 @@ export default {
     },
     keepEditing() {
       this.$router.push(
-        `/collections/${this.$store.state.edits.collection}/${
-          this.$store.state.edits.primaryKey
-        }`
+        `/collections/${this.$store.state.edits.collection}/${this.$store.state.edits.primaryKey}`
       );
     },
     discardChanges() {
@@ -166,8 +165,8 @@ body.info-active {
   padding-right: 284px;
 }
 
-body.info-active-wide {
-  padding-right: 316px;
+body.info-wide-active {
+  padding-right: 284px;
 }
 </style>
 

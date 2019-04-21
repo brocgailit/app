@@ -7,11 +7,12 @@
       icon="filter_list"
       no-background
       @click="open = !open"
-      >Filter</v-header-button
     >
+      Filter
+    </v-header-button>
 
     <div class="wrapper">
-      <i class="material-icons">search</i>
+      <v-icon name="search" />
       <input
         ref="searchInput"
         :placeholder="placeholder || $t('search')"
@@ -28,15 +29,11 @@
           class="clear-filters"
           @click="clearFilters"
         >
-          <i class="material-icons">close</i>
+          <v-icon name="close" />
         </button>
       </transition>
-      <button
-        :class="{ 'has-filters': hasFilters }"
-        class="toggle"
-        @click="open = !open"
-      >
-        <i class="material-icons">filter_list</i>
+      <button :class="{ 'has-filters': hasFilters }" class="toggle" @click="open = !open">
+        <v-icon name="filter_list" />
       </button>
     </div>
 
@@ -60,16 +57,11 @@
             <p>{{ fields[filter.field] }}</p>
             <span>
               {{ $t(operators[filter.operator]) }}
-              <i class="material-icons">arrow_drop_down</i>
-              <select
-                @change="updateFilter(i, 'operator', $event.target.value)"
-              >
-                <option
-                  v-for="(name, operator) in operators"
-                  :key="operator"
-                  :value="operator"
-                  >{{ $t(name) }}</option
-                >
+              <v-icon name="arrow_drop_down" />
+              <select @change="updateFilter(i, 'operator', $event.target.value)">
+                <option v-for="(name, operator) in operators" :key="operator" :value="operator">
+                  {{ $t(name) }}
+                </option>
               </select>
             </span>
             <button class="remove" @click="deleteFilter(i)">
@@ -86,9 +78,9 @@
         </div>
 
         <div class="field">
-          <invisible-label html-for="add">{{
-            $t("add_field_filter")
-          }}</invisible-label>
+          <invisible-label html-for="add">
+            {{ $t("add_field_filter") }}
+          </invisible-label>
           <v-select
             id="add"
             icon="add_circle"
@@ -101,12 +93,7 @@
       </div>
     </transition>
 
-    <v-blocker
-      v-if="open"
-      :z-index="18"
-      class="blocker"
-      @click="open = !open"
-    />
+    <v-blocker v-if="open" :z-index="18" class="blocker" @click="open = !open" />
   </div>
 </template>
 

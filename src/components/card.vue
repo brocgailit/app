@@ -17,68 +17,51 @@
         :style="{ backgroundColor: `var(--${color})` }"
         class="header"
       >
-        <button
-          v-if="selectable"
-          type="button"
-          class="select"
-          @click.stop="$emit('select')"
-        >
-          <i class="material-icons">{{ selectionIcon }}</i>
+        <button v-if="selectable" type="button" class="select" @click.stop="$emit('select')">
+          <v-icon :name="selectionIcon" />
         </button>
 
-        <img
-          v-if="src && !error"
-          :alt="title"
-          :src="src"
-          @error="onImageError"
-        />
+        <img v-if="src && !error" :alt="title" :src="src" @error="onImageError" />
 
-        <i v-if="error" class="material-icons error icon">broken_image</i>
+        <v-icon v-if="error" class="error icon" name="broken_image" size="48" color="white" />
 
-        <i
+        <v-icon
           v-if="icon"
           :class="{ 'half-opacity': opacity === 'half' }"
-          class="material-icons icon"
-          >{{ icon }}</i
-        >
+          class="icon"
+          :name="icon"
+          size="48"
+          color="white"
+        />
 
         <div v-if="$slots.icon" class="custom-icon"><slot name="icon" /></div>
 
         <span v-if="label" class="label">{{ label }}</span>
       </div>
-      <div
-        v-else
-        class="header small"
-        :style="{ backgroundColor: `var(--${color})` }"
-      >
-        <button
-          v-if="selectable"
-          type="button"
-          class="select"
-          @click.stop="$emit('select')"
-        >
-          <i class="material-icons">{{ selectionIcon }}</i>
+      <div v-else class="header small" :style="{ backgroundColor: `var(--${color})` }">
+        <button v-if="selectable" type="button" class="select" @click.stop="$emit('select')">
+          <v-icon :name="selectionIcon" />
         </button>
       </div>
       <div class="body" :class="{ menu: options != null }">
         <div class="main">
-          <component :is="titleElement" class="title" v-tooltip="title">{{
-            title
-          }}</component>
+          <component :is="titleElement" class="title" v-tooltip="title">
+            {{ title }}
+          </component>
           <p v-if="subtitle" class="subtitle">{{ subtitle }}</p>
           <p v-if="body" class="content">{{ body }}</p>
         </div>
         <v-popover placement="right-start" offset="2">
           <button v-if="options != null" type="button" class="menu-toggle">
-            <i class="material-icons">more_vert</i>
+            <v-icon name="more_vert" />
           </button>
 
           <template slot="popover">
             <ul class="ctx-menu">
               <li v-for="({ text, icon }, id) in options" :key="id">
                 <button type="button" @click="$emit(id)" v-close-popover>
-                  <i class="material-icons" v-if="icon">{{ icon }}</i>
-                  {{ text }}
+                  <v-icon v-if="icon" :name="icon" />
+                  {{ $t("remove") }}
                 </button>
               </li>
             </ul>
@@ -209,7 +192,7 @@ export default {
 
 <style lang="scss" scoped>
 .v-card {
-  width: var(--width-small);
+  width: 136px;
   overflow: hidden;
   transition: box-shadow var(--fast) var(--transition);
   cursor: pointer;
@@ -229,7 +212,7 @@ export default {
 
   .header {
     transition: all var(--fast) var(--transition);
-    height: var(--width-small);
+    height: 136px;
     border-radius: var(--border-radius);
     overflow: hidden;
     display: grid;
@@ -282,8 +265,8 @@ export default {
     }
 
     .custom-icon {
-      width: 64px;
-      height: 64px;
+      width: 48px;
+      height: 48px;
     }
 
     img,
@@ -383,11 +366,7 @@ export default {
       left: 0;
       top: 0;
       opacity: 0;
-      background-image: linear-gradient(
-        -180deg,
-        #263238 4%,
-        rgba(38, 50, 56, 0) 100%
-      );
+      background-image: linear-gradient(-180deg, #263238 4%, rgba(38, 50, 56, 0) 100%);
       transition: opacity var(--fast) var(--transition);
     }
 
@@ -424,7 +403,7 @@ export default {
 .ctx-menu {
   list-style: none;
   padding: 0;
-  width: var(--width-small);
+  width: 136px;
 
   li {
     display: block;

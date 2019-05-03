@@ -93,6 +93,7 @@
         </div>
       </template>
       <v-ext-layout-options
+        class="layout-options"
         :key="`${collection}-${viewType}`"
         :type="viewType"
         :collection="collection"
@@ -128,12 +129,7 @@
     </portal>
 
     <portal to="modal" v-if="bookmarkModal">
-      <v-prompt
-        :message="$t('name_bookmark')"
-        v-model="bookmarkTitle"
-        @cancel="cancelBookmark"
-        @confirm="saveBookmark"
-      />
+      <v-create-bookmark :preferences="preferences" @close="closeBookmark"></v-create-bookmark>
     </portal>
   </div>
 </template>
@@ -142,6 +138,7 @@
 import shortid from "shortid";
 import store from "../store/";
 import VSearchFilter from "../components/search-filter/search-filter.vue";
+import VCreateBookmark from "../components/bookmarks/create-bookmark.vue";
 import VNotFound from "./not-found.vue";
 
 import api from "../api";
@@ -155,7 +152,8 @@ export default {
   },
   components: {
     VSearchFilter,
-    VNotFound
+    VNotFound,
+    VCreateBookmark
   },
   data() {
     return {
@@ -163,10 +161,7 @@ export default {
       meta: null,
       preferences: null,
       confirmRemove: false,
-
       bookmarkModal: false,
-      bookmarkTitle: "",
-
       notFound: false
     };
   },
@@ -481,8 +476,7 @@ export default {
     }
   },
   methods: {
-    cancelBookmark() {
-      this.bookmarkTitle = "";
+    closeBookmark() {
       this.bookmarkModal = false;
     },
     setViewQuery(query) {
@@ -593,33 +587,6 @@ export default {
           this.$refs.listing.getItems();
           this.selection = [];
           this.confirmRemove = false;
-        })
-        .catch(error => {
-          this.$store.dispatch("loadingFinished", id);
-          this.$events.emit("error", {
-            notify: this.$t("something_went_wrong_body"),
-            error
-          });
-        });
-    },
-    saveBookmark() {
-      const preferences = { ...this.preferences };
-      preferences.user = this.$store.state.currentUser.id;
-      preferences.title = this.bookmarkTitle;
-      delete preferences.id;
-      delete preferences.role;
-      if (!preferences.collection) {
-        preferences.collection = this.collection;
-      }
-      const id = this.$helpers.shortid.generate();
-      this.$store.dispatch("loadingStart", { id });
-
-      this.$store
-        .dispatch("saveBookmark", preferences)
-        .then(() => {
-          this.$store.dispatch("loadingFinished", id);
-          this.bookmarkModal = false;
-          this.bookmarkTitle = "";
         })
         .catch(error => {
           this.$store.dispatch("loadingFinished", id);
@@ -772,11 +739,15 @@ label.style-4 {
   }
 }
 
+.layout-options {
+  margin-bottom: 64px;
+}
+
 .notifications {
-  position: absolute;
+  position: fixed;
+  width: var(--info-sidebar-width);
   bottom: 0;
-  left: 0;
-  width: 100%;
+  right: 0;
   margin: 0;
   text-decoration: none;
 }

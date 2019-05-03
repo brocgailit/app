@@ -12,7 +12,7 @@
 
     <div class="dropzone" :class="{ smaller: small }">
       <div class="icon">
-        <v-icon name="cloud_upload" size="48" />
+        <v-icon name="cloud_upload" />
       </div>
       <div class="info">
         <p class="name">{{ $tc("drop_files", multiple ? 2 : 1) }}</p>
@@ -29,13 +29,16 @@
           <input type="url" :placeholder="$t('embed_placeholder')" v-model="embedLink" />
           <button type="submit">Save</button>
         </form>
-        <v-icon name="link" v-tooltip="$t('embed')" @click="embed = !embed" class="select" />
-        <v-icon
-          v-tooltip="$t('select_from_device')"
-          @click="$refs.select.click()"
-          class="material-icons select"
-          name="devices"
-        />
+        <button @click="embed = !embed">
+          <v-icon name="link" v-tooltip="$t('embed')" class="select" />
+        </button>
+        <button @click="$refs.select.click()">
+          <v-icon
+            v-tooltip="$t('select_from_device')"
+            class="material-icons select"
+            name="devices"
+          />
+        </button>
       </div>
     </div>
     <transition-group tag="ol" name="list">
@@ -253,6 +256,7 @@ export default {
 
 .dropzone {
   position: relative;
+  padding: 0;
 
   .buttons {
     position: absolute;
@@ -339,7 +343,7 @@ input.select {
   border-radius: var(--border-radius);
 
   .icon i {
-    font-size: 100px;
+    font-size: 100px !important;
     color: var(--lighter-gray);
   }
 
@@ -378,7 +382,7 @@ input.select {
 
   &.smaller {
     .icon i {
-      font-size: 60px;
+      font-size: 60px !important;
     }
 
     p {

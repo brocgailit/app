@@ -10,21 +10,19 @@
       <div class="table" v-if="items.length">
         <div class="header">
           <div class="row">
-            <div
-              v-if="manualSortField"
-              class="manual-sort cell"
-              :class="{ active: manualSorting }"
-            >
+            <div v-if="manualSortField" class="manual-sort cell" :class="{ active: manualSorting }">
               <button
                 class="no-wrap"
                 type="button"
                 v-tooltip="$t('enable_manual_sorting')"
                 @click="startManualSorting"
               >
-                <i class="material-icons">sort</i>
-                <i v-if="manualSorting" class="material-icons">
-                  {{ sort.asc ? "arrow_downward" : "arrow_upward" }}
-                </i>
+                <v-icon name="sort" />
+                <v-icon
+                  v-if="manualSorting"
+                  class="sort-arrow"
+                  :name="sort.asc ? 'arrow_upward' : 'arrow_downward'"
+                />
               </button>
             </div>
             <button
@@ -63,13 +61,9 @@
                 class="manual-sort cell"
                 :class="{ active: manualSorting }"
               >
-                <i class="material-icons">drag_handle</i>
+                <v-icon name="drag_handle" />
               </div>
-              <div
-                v-for="column in columns"
-                :key="column.field"
-                class="no-wrap"
-              >
+              <div v-for="column in columns" :key="column.field" class="no-wrap">
                 <v-ext-display
                   :interface-type="(column.fieldInfo || {}).interface || null"
                   :name="column.field"

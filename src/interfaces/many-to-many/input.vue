@@ -450,7 +450,6 @@ export default {
               });
             }
           }
-          console.log("delete payload", newValue);
           this.$emit("input", newValue);
 
           this.selectExisting = false;
